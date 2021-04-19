@@ -23,7 +23,7 @@ class NewCommand extends Command
         $this
             ->setName('create')
             ->setDescription('Create a new S. Group Craft project')
-            ->addArgument('name', InputArgument::OPTIONAL, '.')
+            ->addArgument('name', InputArgument::OPTIONAL, 'The directory to install to', '.')
             ->addOption('branch', null, InputOption::VALUE_NONE, 'Installs the latest branch')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Forces install even if the directory already exists');
     }
@@ -51,7 +51,6 @@ EOD;
         sleep(1);
 
         $name = $input->getArgument('name');
-
         $directory = $name === '.' ? '.' : getcwd() . '/' . $name;
 
         $version = $this->getVersion($input);
@@ -65,26 +64,27 @@ EOD;
                 // Remove all files in folder, except `.git`
                 $commands[] = "find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +";
             } else {
-                $commands[] = "rm -rf $directory";
+                $commands[] = "rm -rf \"$directory\"";
             }
         }
 
         // Setup temp directory to allow installing at `.`
-        $directory = $directory === '.' ? './temp' : $directory;
+        $tempDirectory = $directory === '.' ? './temp' : $directory;
 
         // Add our private repo to composer, globally - automatically
         $commands[] = $composer . ' --global config repositories.sgroup composer https://composer.sgroup.com.au';
 
         // Create a project via composer, using the base-craft3 repo
-        $commands[] = $composer . " create-project sgroup/base-craft \"$directory\" $version -sdev --prefer-dist";
+        $commands[] = $composer . " create-project sgroup/base-craft \"$tempDirectory\" $version -sdev --prefer-dist";
 
         // If we're installing at `.`, move from temp directory into root before proceeding
-        if ($name === '.') {
+        if ($directory === '.') {
             $commands[] = "mv temp/* temp/.[^.]* .";
             $commands[] = "rm -rf temp/";
         }
 
         // Cleanup and general prep, now its installed
+        $commands[] = "cd \"$directory\"";
         $commands[] = "cp .env.example .env";
         $commands[] = "rm composer.json";
         $commands[] = "mv composer.json.default composer.json";
