@@ -92,11 +92,13 @@ EOD;
         $commands[] = "chmod +x craft";
         $commands[] = "./craft site-scripts/setup";
 
-        // Final update, now that Craft is installed. We have to lock at versions due to project config.
-        $commands[] = 'composer update';
-
         if (($process = $this->runCommands($commands, $input, $output))->isSuccessful()) {
-            $output->writeln(PHP_EOL . '<comment>Craft is ready! Go create wonder.</comment>');
+            // Final update, now that Craft is installed. We have to lock at versions due to project config.
+            $commands = ['composer update'];
+
+            if (($process = $this->runCommands($commands, $input, $output))->isSuccessful()) {
+                $output->writeln(PHP_EOL . '<comment>Craft is ready! Go create wonder.</comment>');
+            }
         }
 
         return $process->getExitCode();
