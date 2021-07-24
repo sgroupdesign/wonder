@@ -75,7 +75,7 @@ EOD;
         $commands[] = $composer . ' --global config repositories.sgroup composer https://composer.sgroup.com.au';
 
         // Create a project via composer, using the base-craft3 repo
-        $commands[] = $composer . " create-project sgroup/base-craft \"$tempDirectory\" $version -sdev --prefer-dist";
+        $commands[] = $composer . " create-project sgroup/base-craft \"$tempDirectory\" $version --remove-vcs";
 
         // If we're installing at `.`, move from temp directory into root before proceeding
         if ($directory === '.') {
