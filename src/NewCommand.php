@@ -146,16 +146,6 @@ EOD;
      */
     protected function runCommands($commands, InputInterface $input, OutputInterface $output, array $env = [])
     {
-        if ($input->getOption('no-ansi')) {
-            $commands = array_map(function ($value) {
-                if (substr($value, 0, 5) === 'chmod') {
-                    return $value;
-                }
-
-                return $value . ' --no-ansi';
-            }, $commands);
-        }
-
         if ($input->getOption('quiet')) {
             $commands = array_map(function ($value) {
                 if (substr($value, 0, 5) === 'chmod') {
