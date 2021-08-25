@@ -83,7 +83,7 @@ EOD;
             $commands[] = "rm -rf temp/";
         }
 
-        // Cleanup and general prep, now its installed
+        // Cleanup and general prep, now it's installed
         $commands[] = "cd \"$directory\"";
         $commands[] = "cp .env.example .env";
         $commands[] = "rm composer.json";
@@ -96,6 +96,9 @@ EOD;
         $commands[] = 'composer update';
         $commands[] = './craft migrate/all --interactive=0';
         $commands[] = './craft project-config/apply --force';
+
+        // Install front-end scripts
+        $commands[] = 'npm install';
 
         if (($process = $this->runCommands($commands, $input, $output))->isSuccessful()) {
             $output->writeln(PHP_EOL . '<comment>Craft is ready! Go create wonder.</comment>');
