@@ -71,8 +71,14 @@ EOD;
         // Setup temp directory to allow installing at `.`
         $tempDirectory = $directory === '.' ? './temp' : $directory;
 
+        // Add our private repo to composer, globally - automatically
+        // Removed - we can't have this as some machines have issues with SSL (below)
+        // `curl error 60 while downloading https://composer.sgroup.com.au/packages.json: SSL certificate problem: certificate has expired`
+        // $commands[] = $composer . ' --global config repositories.sgroup composer https://composer.sgroup.com.au';
+
         // Create a project via composer, using the base-craft3 repo
-        $commands[] = $composer . " create-project sgroup/base-craft \"$tempDirectory\" $version --remove-vcs";
+        // Use of non-SSL URL is deliberate, due to the issue above.
+        $commands[] = $composer . " create-project sgroup/base-craft \"$tempDirectory\" $version --remove-vcs --repository-url http://composer.sgroup.com.au --no-secure-http";
 
         // If we're installing at `.`, move from temp directory into root before proceeding
         if ($directory === '.') {
