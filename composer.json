@@ -1,5 +1,6 @@
 {
     "name": "sgroup/wonder",
+    "version": "1.0.0",
     "description": "Craft installer for S. Group projects.",
     "require": {
         "php": "^7.2|^8.0",
