@@ -71,9 +71,6 @@ EOD;
         // Setup temp directory to allow installing at `.`
         $tempDirectory = $directory === '.' ? './temp' : $directory;
 
-        // Add our private repo to composer, globally - automatically
-        $commands[] = $composer . ' --global config repositories.sgroup composer https://composer.sgroup.com.au';
-
         // Create a project via composer, using the base-craft3 repo
         $commands[] = $composer . " create-project sgroup/base-craft \"$tempDirectory\" $version --remove-vcs";
 
