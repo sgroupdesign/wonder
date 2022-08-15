@@ -76,7 +76,7 @@ EOD;
         // `curl error 60 while downloading https://composer.sgroup.com.au/packages.json: SSL certificate problem: certificate has expired`
         // $commands[] = $composer . ' --global config repositories.sgroup composer https://composer.sgroup.com.au';
 
-        // Create a project via composer, using the base-craft3 repo
+        // Create a project via composer, using the base-craft repo
         // Use of non-SSL URL is deliberate, due to the issue above.
         $commands[] = $composer . " create-project sgroup/base-craft \"$tempDirectory\" $version --remove-vcs --repository-url http://composer.sgroup.com.au --no-secure-http";
 
